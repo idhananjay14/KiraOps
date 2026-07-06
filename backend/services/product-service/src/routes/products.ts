@@ -1,36 +1,45 @@
 import { Router } from "express";
+import { query } from "../database/connection";
 
 const router = Router();
 
-const products = [
-  {
-    id: 1,
-    name: "Nike Shoes",
-    price: 4999,
-  },
-  {
-    id: 2,
-    name: "iPhone 16",
-    price: 89999,
-  },
-];
+router.get("/", async (req, res) => {
+  try {
+    const result = await query("SELECT * FROM products ORDER BY id");
 
-router.get("/", (req, res) => {
-  res.json(products);
-});
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
 
-router.get("/:id", (req, res) => {
-  const product = products.find(
-    (product) => product.id === Number(req.params.id)
-  );
-
-  if (!product) {
-    return res.status(404).json({
-      message: "Product not found",
+    res.status(500).json({
+      message: "Failed to fetch products",
     });
   }
+});
 
-  res.json(product);
+router.get("/:id", async (req, res) => {
+  try {
+    const productId = Number(req.params.id);
+
+    const result = await query(
+      "SELECT * FROM products WHERE id = $1",
+      [productId]  
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to fetch product",
+    });
+  }
 });
 
 export default router;

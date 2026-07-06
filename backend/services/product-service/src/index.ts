@@ -3,6 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import productRoutes from "./routes/products";
+import { connectDB } from "./database/connection";
+
 
 dotenv.config();
 
@@ -22,6 +24,17 @@ app.get("/health", (req, res) => {
 
 app.use("/products", productRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Product Service running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Product service running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to connect to database:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
