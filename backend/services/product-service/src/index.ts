@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import productRoutes from "./routes/products";
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ app.get("/health", (req, res) => {
     status: "Product Service is healthy"
   });
 });
+
+app.use("/products", productRoutes);
 
 app.listen(PORT, () => {
   console.log(`Product Service running on port ${PORT}`);
