@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { query } from "../database/connection";
+import { authenticateToken, AuthRequest } from "../middleware/auth";
 
 const router = Router();
 
@@ -98,5 +99,15 @@ router.post("/login", async (req, res) => {
         });
     }
 });
+
+router.get(
+  "/profile",
+  authenticateToken,
+  (req: AuthRequest, res) => {
+    return res.json({
+      user: req.user,
+    });
+  }
+);
 
 export default router;
