@@ -29,6 +29,33 @@ app.use(
     })
 );
 
+app.use(
+  "/api/auth",
+  createProxyMiddleware({
+    target: process.env.AUTH_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: (path) => `/auth${path}`,
+  })
+);
+
+app.use(
+  "/api/orders",
+  createProxyMiddleware({
+    target: process.env.ORDER_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: (path) => `/orders${path}`,
+  })
+);
+
+app.use(
+  "/api/users",
+  createProxyMiddleware({
+    target: process.env.USER_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: (path) => `/users${path}`,
+  })
+);
+
 app.use((req, res) => {
     res.status(404).json({
         message: "Route not found",
