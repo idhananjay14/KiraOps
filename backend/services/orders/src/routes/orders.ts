@@ -1,15 +1,21 @@
 import { Router } from "express";
 import { query } from "../database/connection";
+import { authenticateToken, AuthRequest } from "../middleware/auth";
 
 const router = Router();
 
-router.post("/", async (req, res) => {
+router.post("/", authenticateToken, async (req: AuthRequest, res) => {
   try {
-    const { userId, productId, quantity, totalAmount } = req.body;
+    const { productId, quantity, totalAmount } = req.body;
+    const userId = req.user?.id;
 
-    if (!userId || !productId || !quantity || !totalAmount) {
+    if (
+      productId  === undefined ||
+      quantity === undefined ||
+      totalAmount === undefined
+    ) {
       return res.status(400).json({
-        message: "All fields are required",
+        message: "productId, quantity and totalAmount are required",
       });
     }
 
@@ -34,10 +40,13 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", authenticateToken, async (req: AuthRequest, res) => {
   try {
+    const userId = req.user?.id;
+    
     const result = await query(
-      "SELECT * FROM orders ORDER BY id DESC"
+      "SELECT * FROM orders WHERE user_id = $1 ORDER BY id DESC",
+      [userId]
     );
 
     return res.json(result.rows);
@@ -50,11 +59,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authenticateToken, async (req: AuthRequest, res) => {
   try {
+     const userId = req.user?.id;
+     
     const result = await query(
-      "SELECT * FROM orders WHERE id = $1",
-      [req.params.id]
+      "SELECT * FROM orders WHERE id = $1 AND user_id = $2",
+      [req.params.id, userId]
     );
 
     if (result.rows.length === 0) {
