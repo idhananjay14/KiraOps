@@ -7,6 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import { Link } from "react-router-dom";
+
 export default function Hero() {
   return (
     <Box
@@ -68,6 +70,8 @@ export default function Hero() {
 
               <Stack direction="row" spacing={2}>
                 <Button
+                  component={Link}
+                  to="/shop"
                   variant="contained"
                   sx={{
                     bgcolor: "#111",
@@ -79,6 +83,8 @@ export default function Hero() {
                 </Button>
 
                 <Button
+                  component={Link}
+                  to="/shop"
                   variant="outlined"
                   sx={{
                     borderColor: "#111",

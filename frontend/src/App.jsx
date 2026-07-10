@@ -11,6 +11,7 @@ import Checkout from "./pages/Checkout";
 import Account from "./pages/Account";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import Cart from "./pages/Cart";
 
 export default function App() {
   return (
@@ -30,6 +31,8 @@ export default function App() {
           <Route path="checkout" element={<Checkout />} />
 
           <Route path="account" element={<Account />} />
+
+          <Route path="cart" element={<Cart />} />
 
           <Route path="admin" element={<Admin />} />
 

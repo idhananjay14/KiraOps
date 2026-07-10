@@ -5,13 +5,16 @@ import {
   Typography,
   Box,
   IconButton,
+  Badge,
 } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 export default function Header() {
+  const { cartItems } = useCart();
   const navLinks = [
     { label: "Home", path: "/" },
     { label: "Shop", path: "/shop" },
@@ -124,7 +127,13 @@ export default function Header() {
                 p: 0.75,
               }}
             >
-              <ShoppingBagOutlinedIcon fontSize="small" />
+              <Badge
+                badgeContent={cartItems.length}
+                color="error"
+                overlap="circular"
+              >
+                <ShoppingBagOutlinedIcon fontSize="small" />
+              </Badge>
             </IconButton>
           </Box>
         </Toolbar>

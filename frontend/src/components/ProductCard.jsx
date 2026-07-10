@@ -1,31 +1,62 @@
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
+  const navigate = useNavigate();
+
   return (
-    <Card
-      elevation={0}
+    <Box
+      onClick={() => navigate(`/product/${product.id}`)}
       sx={{
-        borderRadius: 0,
+        cursor: "pointer",
+        transition: ".35s",
+
+        "&:hover img": {
+          transform: "scale(1.05)",
+        },
       }}
     >
-      <CardMedia
-        component="img"
-        image={product.image}
+      <Box
         sx={{
-          height: 420,
-          objectFit: "cover",
+          overflow: "hidden",
+          bgcolor: "#f5f5f5",
         }}
-      />
+      >
+        <Box
+          component="img"
+          src={product.image}
+          alt={product.name}
+          sx={{
+            width: "100%",
+            height: 340,
+            objectFit: "cover",
+            transition: ".5s",
+            display: "block",
+          }}
+        />
+      </Box>
 
-      <CardContent sx={{ px: 0 }}>
-        <Typography variant="h5">
-          {product.name}
-        </Typography>
+      <Typography
+        sx={{
+          mt: 2,
+          fontFamily: "Cormorant Garamond",
+          fontSize: 28,
+          color: "#111",
+        }}
+      >
+        {product.name}
+      </Typography>
 
-        <Typography color="text.secondary">
-          ${product.price}
-        </Typography>
-      </CardContent>
-    </Card>
+      <Typography
+        sx={{
+          mt: 0.5,
+          color: "#8B7355",
+          fontSize: 15,
+          letterSpacing: ".08em",
+        }}
+      >
+        ${product.price}
+      </Typography>
+    </Box>
   );
 }
