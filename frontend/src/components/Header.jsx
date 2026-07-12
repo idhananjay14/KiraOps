@@ -11,7 +11,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { Link } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import useCart from "../context/useCart";
 
 export default function Header() {
   const { cartItems } = useCart();

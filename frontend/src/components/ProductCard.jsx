@@ -9,17 +9,13 @@ export default function ProductCard({ product }) {
       onClick={() => navigate(`/product/${product.id}`)}
       sx={{
         cursor: "pointer",
-        transition: ".35s",
-
-        "&:hover img": {
-          transform: "scale(1.05)",
-        },
       }}
     >
       <Box
         sx={{
           overflow: "hidden",
-          bgcolor: "#f5f5f5",
+          bgcolor: "#f0ede7",
+          aspectRatio: "3 / 4",
         }}
       >
         <Box
@@ -28,10 +24,12 @@ export default function ProductCard({ product }) {
           alt={product.name}
           sx={{
             width: "100%",
-            height: 340,
+            height: "100%",
             objectFit: "cover",
-            transition: ".5s",
-            display: "block",
+            transition: "transform .5s ease",
+            "&:hover": {
+              transform: "scale(1.04)",
+            },
           }}
         />
       </Box>

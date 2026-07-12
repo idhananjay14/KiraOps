@@ -5,8 +5,8 @@ export default function ShopHero() {
     <Box
       sx={{
         bgcolor: "#FAF9F6",
-        pt: 8,
-        pb: 6,
+        pt: 5,
+        pb: 4,
         borderBottom: "1px solid #ece8e2",
       }}
     >

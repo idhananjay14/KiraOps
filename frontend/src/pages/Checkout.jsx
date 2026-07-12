@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useCart } from "../context/CartContext";
+import useCart from "../context/useCart";
 
 export default function Checkout() {
   const { cartItems } = useCart();

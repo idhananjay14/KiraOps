@@ -6,7 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import App from "./App";
 import theme from "./theme/theme";
-import CartProvider from "./context/CartContext";
+import CartProvider from "./context/CartProvider";
 
 import "./index.css";
 

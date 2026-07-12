@@ -81,20 +81,7 @@ export default function Hero() {
                 >
                   Shop Collection
                 </Button>
-
-                <Button
-                  component={Link}
-                  to="/shop"
-                  variant="outlined"
-                  sx={{
-                    borderColor: "#111",
-                    color: "#111",
-                    px: 4,
-                    py: 1.4,
-                  }}
-                >
-                  Discover
-                </Button>
+                
               </Stack>
             </Stack>
           </Grid>

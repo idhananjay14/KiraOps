@@ -1,4 +1,5 @@
 import { Box, Button, Container, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function Editorial() {
   return (
@@ -106,6 +107,8 @@ export default function Editorial() {
             </Typography>
 
             <Button
+              component={Link}
+              to="/product/5"
               variant="contained"
               sx={{
                 bgcolor: "#111",

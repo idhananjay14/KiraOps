@@ -1,6 +1,6 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import useCart from "../context/useCart";
 import products from "../data/products";
 
 export default function Product() {
