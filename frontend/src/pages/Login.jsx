@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -6,9 +7,49 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/authService";
 
 export default function Login() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      setLoading(true);
+
+      await login(
+        formData.email,
+        formData.password
+      );
+
+      alert("Login successful");
+
+      navigate("/", { replace: true });
+    } catch (error) {
+      alert(
+        error.response?.data?.message || "Login failed"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -19,6 +60,8 @@ export default function Login() {
     >
       <Container maxWidth="sm">
         <Paper
+          component="form"
+          onSubmit={handleSubmit}
           elevation={0}
           sx={{
             p: 5,
@@ -40,6 +83,9 @@ export default function Login() {
           <TextField
             fullWidth
             label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             margin="normal"
           />
 
@@ -47,12 +93,17 @@ export default function Login() {
             fullWidth
             label="Password"
             type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             margin="normal"
           />
 
           <Button
             fullWidth
+            type="submit"
             variant="contained"
+            disabled={loading}
             sx={{
               mt: 3,
               py: 1.5,
@@ -64,7 +115,7 @@ export default function Login() {
               },
             }}
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </Button>
 
           <Typography

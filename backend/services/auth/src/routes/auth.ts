@@ -101,13 +101,13 @@ router.post("/login", async (req, res) => {
 });
 
 router.get(
-  "/profile",
-  authenticateToken,
-  (req: AuthRequest, res) => {
-    return res.json({
-      user: req.user,
-    });
-  }
+    "/profile",
+    authenticateToken,
+    (req: AuthRequest, res) => {
+        return res.json({
+            user: req.user,
+        });
+    }
 );
 
 export default router;

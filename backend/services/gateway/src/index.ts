@@ -8,72 +8,61 @@ dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT || 3001;
-
-app.use(helmet());
 app.use(cors());
-app.use(express.json());
+app.use(helmet());
 
-app.get("/health", (req, res) => {
-    res.json({
-        status: "Gateway is healthy",
-    });
+app.get("/health", (_, res) => {
+  res.json({
+    status: "Gateway is healthy",
+  });
 });
-
-app.use(
-    "/api/products",
-    createProxyMiddleware({
-        target: process.env.PRODUCT_SERVICE_URL,
-        changeOrigin: true,
-        pathRewrite: (path) => `/products${path}`,
-    })
-);
 
 app.use(
   "/api/auth",
   createProxyMiddleware({
-    target: process.env.AUTH_SERVICE_URL,
+    target: process.env.AUTH_SERVICE_URL!,
     changeOrigin: true,
-    pathRewrite: (path) => `/auth${path}`,
+    pathRewrite: {
+      "^/api/auth": "/auth",
+    },
+  })
+);
+
+app.use(
+  "/api/products",
+  createProxyMiddleware({
+    target: process.env.PRODUCT_SERVICE_URL!,
+    changeOrigin: true,
+    pathRewrite: {
+      "^/api/products": "/products",
+    },
   })
 );
 
 app.use(
   "/api/orders",
   createProxyMiddleware({
-    target: process.env.ORDER_SERVICE_URL,
+    target: process.env.ORDER_SERVICE_URL!,
     changeOrigin: true,
-    pathRewrite: (path) => `/orders${path}`,
+    pathRewrite: {
+      "^/api/orders": "/orders",
+    },
   })
 );
 
 app.use(
   "/api/users",
   createProxyMiddleware({
-    target: process.env.USER_SERVICE_URL,
+    target: process.env.USER_SERVICE_URL!,
     changeOrigin: true,
-    pathRewrite: (path) => `/users${path}`,
+    pathRewrite: {
+      "^/api/users": "/users",
+    },
   })
 );
 
-app.use((req, res) => {
-    res.status(404).json({
-        message: "Route not found",
-    });
-});
-
-app.use((
-    err: Error,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction) => {
-    console.error(err);
-
-    res.status(500).json({
-        message: "Internal server error",
-    });
-});
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
-    console.log(`Gateway running on port ${PORT}`);
+  console.log(`Gateway running on ${PORT}`);
 });

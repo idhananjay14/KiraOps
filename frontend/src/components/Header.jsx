@@ -6,19 +6,33 @@ import {
   Box,
   IconButton,
   Badge,
+  Button,
 } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCart from "../context/useCart";
+import {
+  isAuthenticated,
+  logout,
+} from "../services/authService";
 
 export default function Header() {
   const { cartItems } = useCart();
+  const navigate = useNavigate();
+  
+  const loggedIn = isAuthenticated();
+
   const navLinks = [
     { label: "Home", path: "/" },
     { label: "Shop", path: "/shop" },
   ];
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    window.location.reload();
+  };
 
   return (
     <AppBar
@@ -102,7 +116,6 @@ export default function Header() {
             <IconButton
               sx={{
                 color: "#111",
-                p: 0.75,
               }}
             >
               <SearchOutlinedIcon fontSize="small" />
@@ -110,10 +123,9 @@ export default function Header() {
 
             <IconButton
               component={Link}
-              to="/login"
+              to={loggedIn ? "/account" : "/login"}
               sx={{
                 color: "#111",
-                p: 0.75,
               }}
             >
               <PersonOutlineOutlinedIcon fontSize="small" />
@@ -124,17 +136,26 @@ export default function Header() {
               to="/cart"
               sx={{
                 color: "#111",
-                p: 0.75,
               }}
             >
               <Badge
                 badgeContent={cartItems.length}
                 color="error"
-                overlap="circular"
               >
                 <ShoppingBagOutlinedIcon fontSize="small" />
               </Badge>
             </IconButton>
+            {loggedIn && (
+              <Button
+                onClick={handleLogout}
+                sx={{
+                  color: "#111",
+                  textTransform: "none",
+                }}
+              >
+                Logout
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>

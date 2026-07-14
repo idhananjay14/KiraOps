@@ -53,7 +53,7 @@ export default function ProductCard({ product }) {
           letterSpacing: ".08em",
         }}
       >
-        ${product.price}
+        ₹{product.price.toLocaleString("en-IN")}
       </Typography>
     </Box>
   );

@@ -1,15 +1,38 @@
+import { useEffect, useState } from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import useCart from "../context/useCart";
-import products from "../data/products";
+import { getProduct } from "../services/productService";
 
 export default function Product() {
   const { id } = useParams();
   const { addToCart } = useCart();
 
-  const product = products.find(
-    (item) => item.id === Number(id)
-  );
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProduct() {
+      try {
+        const data = await getProduct(id);
+        setProduct(data);
+      } catch (error) {
+        console.error("Failed to load product", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProduct();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <Container sx={{ py: 10 }}>
+        <Typography>Loading...</Typography>
+      </Container>
+    );
+  }
 
   if (!product) {
     return (
@@ -83,7 +106,7 @@ export default function Product() {
                 mb: 4,
               }}
             >
-              ${product.price}
+              ₹{product.price.toLocaleString("en-IN")}
             </Typography>
 
             <Typography
