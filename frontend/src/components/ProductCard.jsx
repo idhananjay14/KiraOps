@@ -20,7 +20,7 @@ export default function ProductCard({ product }) {
       >
         <Box
           component="img"
-          src={product.image}
+          src={product.image_url}
           alt={product.name}
           sx={{
             width: "100%",

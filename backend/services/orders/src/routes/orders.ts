@@ -5,26 +5,29 @@ import { authenticateToken, AuthRequest } from "../middleware/auth";
 const router = Router();
 
 router.post("/", authenticateToken, async (req: AuthRequest, res) => {
+  console.log("REQ BODY:", req.body);
   try {
-    const { productId, quantity, totalAmount } = req.body;
+    const { productId, productName, productImage, quantity, totalAmount } = req.body;
     const userId = req.user?.id;
 
     if (
       productId  === undefined ||
+      !productName ||
+      !productImage ||
       quantity === undefined ||
       totalAmount === undefined
     ) {
       return res.status(400).json({
-        message: "productId, quantity and totalAmount are required",
+        message: "productId, productName, productImage, quantity and totalAmount are required",
       });
     }
 
     const result = await query(
       `INSERT INTO orders
-      (user_id, product_id, quantity, total_amount)
-      VALUES ($1, $2, $3, $4)
+      (user_id, product_id, product_name, product_image, quantity, total_amount)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *`,
-      [userId, productId, quantity, totalAmount]
+      [userId, productId, productName, productImage, quantity, totalAmount]
     );
 
     return res.status(201).json({

@@ -8,7 +8,7 @@ export async function getProducts() {
     name: product.name,
     description: product.description,
     price: Number(product.price),
-    image: product.image_url,
+    image_url: product.image_url,
     category: product.category,
   }));
 }

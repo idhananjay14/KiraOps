@@ -103,10 +103,27 @@ router.post("/login", async (req, res) => {
 router.get(
     "/profile",
     authenticateToken,
-    (req: AuthRequest, res) => {
-        return res.json({
-            user: req.user,
+    async (req: AuthRequest, res) => {
+        try {
+            const result = await query(
+                "SELECT id, name, email FROM users WHERE id = $1",
+                [req.user?.id]
+            );
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          message: "User not found",
         });
+      }
+
+      return res.json(result.rows[0]);
+    } catch (error) {
+      console.error(error);
+
+      return res.status(500).json({
+        message: "Failed to load profile",
+            });
+        }
     }
 );
 

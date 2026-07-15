@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -9,14 +10,40 @@ import {
 } from "@mui/material";
 
 import useCart from "../context/useCart";
+import { createOrder } from "../services/orderService";
 
 export default function Checkout() {
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
+  const navigate = useNavigate();
 
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  const handlePlaceOrder = async () => {
+    try {
+      for (const item of cartItems) {
+        console.log("Sending order:", item);
+        await createOrder(
+          item.id,
+          item.name,
+          item.image,
+          item.quantity,
+          item.price * item.quantity
+        );
+      }
+
+      clearCart();
+
+      alert("Order placed successfully");
+
+      navigate("/account");
+    } catch (error) {
+      console.log("Order Error:", error.response?.data);
+      alert(error.response?.data?.message || "Failed to place order");
+    }
+  };
 
   return (
     <Box
@@ -100,7 +127,7 @@ export default function Checkout() {
                   </Typography>
 
                   <Typography>
-                    ${item.price * item.quantity}
+                    ₹{(item.price * item.quantity).toLocaleString("en-IN")}
                   </Typography>
                 </Box>
               ))}
@@ -119,13 +146,16 @@ export default function Checkout() {
                 </Typography>
 
                 <Typography fontWeight={700}>
-                  ${total}
+                  ₹{total.toLocaleString("en-IN")}
                 </Typography>
               </Box>
 
               <Button
                 fullWidth
                 variant="contained"
+                onClick={handlePlaceOrder}
+                disabled={cartItems.length === 0}
+
                 sx={{
                   mt: 4,
                   bgcolor: "#111",
