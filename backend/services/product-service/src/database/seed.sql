@@ -10,34 +10,48 @@ VALUES
     'Silk Evening Dress',
     'Elegant handcrafted silk evening dress.',
     7999.00,
-    '/images/silk-evening-dress.jpg',
+    '/images/dress.jpg',
     'Dresses'
 ),
 (
     'Leather Handbag',
     'Premium leather handbag for everyday luxury.',
     6499.00,
-    '/images/leather-handbag.jpg',
+    '/images/handbag.jpg',
     'Bags'
 ),
 (
     'Pearl Necklace',
     'Classic freshwater pearl necklace.',
     4999.00,
-    '/images/pearl-necklace.jpg',
+    '/images/necklace.jpg',
     'Jewelry'
 ),
 (
     'Cashmere Coat',
     'Soft cashmere winter coat.',
     12999.00,
-    '/images/cashmere-coat.jpg',
-    'Outerwear'
+    '/images/coat.jpg',
+    'Dresses'
 ),
 (
     'Gold Bracelet',
     'Minimal 18K gold bracelet.',
     8999.00,
-    '/images/gold-bracelet.jpg',
+    '/images/bracelet.jpg',
     'Jewelry'
+),
+(
+    'Chanel No. 5',
+    'Luxury fragrance.',
+    12999.00,
+    '/images/chanel.avif',
+    'Beauty'
+),
+(
+    'Luxury Skincare Set',
+    'Premium skincare collection.',
+    8999.00,
+    '/images/skincare.jpg',
+    'Beauty'
 );

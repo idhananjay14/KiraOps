@@ -8,21 +8,21 @@ const categories = [
     subtitle: "Ateliers & Ready-to-Wear",
     image:
       "https://images.unsplash.com/photo-1601597565151-70c4020dc0e1?w=1200",
-    link: "/shop?category=fashion",
+    link: "/shop?category=Fashion",
   },
   {
     title: "Jewelry & Watches",
     subtitle: "Timepieces & Fine Jewelry",
     image:
       "https://images.unsplash.com/photo-1670177257750-9b47927f68eb?w=1200",
-    link: "/shop?category=jewelry",
+    link: "/shop?category=Jewelry",
   },
   {
     title: "Beauty & Fragrance",
     subtitle: "Perfumery & Skin",
     image:
       "https://images.pexels.com/photos/34089129/pexels-photo-34089129.jpeg?w=1200",
-    link: "/shop?category=beauty",
+    link: "/shop?category=Beauty",
   },
 ];
 

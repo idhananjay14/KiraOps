@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 const categories = [
   { label: "All", value: null },
-  { label: "Fashion", value: "fashion" },
-  { label: "Jewelry", value: "jewelry" },
-  { label: "Beauty", value: "beauty" },
+  { label: "Dresses", value: "Dresses" },
+  { label: "Bags", value: "Bags" },
+  { label: "Jewelry", value: "Jewelry" },
+  { label: "Beauty", value: "Beauty" },
 ];
 
 export default function FilterBar({ activeCategory }) {

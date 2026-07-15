@@ -65,7 +65,7 @@ export default function Editorial() {
                 mb: 2,
               }}
             >
-              Fragrance · No.7
+              Chanel · No.7
             </Typography>
 
             <Typography
@@ -80,11 +80,11 @@ export default function Editorial() {
                 lineHeight: 1.03,
               }}
             >
-              A perfume the
+              The timeless
               <br />
-              way a poem is a
+              essence of
               <br />
-              perfume —
+              luxury.
             </Typography>
 
             <Typography
@@ -100,15 +100,15 @@ export default function Editorial() {
                 mb: 4,
               }}
             >
-              short,
-              unfinished,
+              An iconic fragrance,
+              crafted to leave a
               <br />
-              unforgettable.
+              lasting impression.
             </Typography>
 
             <Button
               component={Link}
-              to="/product/5"
+              to="/shop?category=Beauty"
               variant="contained"
               sx={{
                 bgcolor: "#111",

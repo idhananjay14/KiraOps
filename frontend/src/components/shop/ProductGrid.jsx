@@ -24,9 +24,28 @@ export default function ProductGrid({ category }) {
     loadProducts();
   }, []);
 
-  const filtered = category
-    ? products.filter((p) => p.category === category)
-    : products;
+    const filtered = (() => {
+      if (!category) return products;
+
+      switch (category.toLowerCase()) {
+        case "fashion":
+          return products.filter((p) =>
+            ["Dresses", "Bags"].includes(p.category)
+          );
+
+        case "jewelry":
+          return products.filter((p) => p.category === "Jewelry");
+
+        case "beauty":
+          return products.filter((p) => p.category === "Beauty");
+
+        default:
+          return products.filter(
+            (p) => p.category.toLowerCase() === category.toLowerCase()
+          );
+      }
+    })();
+
   if (loading) {
     return (
       <Container sx={{ py: 8 }}>

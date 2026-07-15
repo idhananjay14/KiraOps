@@ -63,7 +63,7 @@ export default function Product() {
         >
           <Box
             component="img"
-            src={product.image_url}
+            src={product.image}
             alt={product.name}
             sx={{
               width: "100%",
