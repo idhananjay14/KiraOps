@@ -24,7 +24,6 @@ export default function Checkout() {
   const handlePlaceOrder = async () => {
     try {
       for (const item of cartItems) {
-        console.log("Sending order:", item);
         await createOrder(
           item.id,
           item.name,

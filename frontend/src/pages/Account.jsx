@@ -44,8 +44,7 @@ export default function Account() {
 
   const handleLogout = () => {
     logout();
-    navigate("/login", { replace: true });
-    window.location.reload();
+    navigate("/login", { replace: true });c
   };
 
   if (!user) {

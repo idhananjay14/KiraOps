@@ -30,8 +30,7 @@ export default function Header() {
   ];
   const handleLogout = () => {
     logout();
-    navigate("/");
-    window.location.reload();
+    navigate("/", { replace: true });
   };
 
   return (
