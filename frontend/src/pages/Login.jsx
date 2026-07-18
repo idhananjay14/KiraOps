@@ -9,9 +9,11 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
+import useSnackbar from "../hooks/useSnackbar";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { showSnackbar } = useSnackbar();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -30,6 +32,9 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    console.log("HANDLE SUBMIT CALLED");
+
+
     try {
       setLoading(true);
 
@@ -38,13 +43,20 @@ export default function Login() {
         formData.password
       );
 
-      alert("Login successful");
+      showSnackbar("Login successful", "success");
 
-      navigate("/", { replace: true });
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 1000);
+
     } catch (error) {
-      alert(
-        error.response?.data?.message || "Login failed"
+       console.log("LOGIN ERROR:", error);
+       
+      showSnackbar(
+        error.response?.data?.message || "Login failed",
+        "error"
       );
+
     } finally {
       setLoading(false);
     }

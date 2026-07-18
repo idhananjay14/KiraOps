@@ -14,11 +14,30 @@ router.get("/", (req, res) => {
 
 router.post("/register", async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const name = req.body.name?.trim();
+        const email = req.body.email?.trim().toLowerCase();
+        const password = req.body.password;
 
         if (!name || !email || !password) {
             return res.status(400).json({
                 message: "Name, email and password are required",
+            });
+        }
+
+        if (password.length < 6) {
+    return res.status(400).json({
+        message: "Password must be at least 6 characters long",
+    });
+}
+
+        const existingUser = await query(
+            "SELECT id FROM users WHERE email = $1",
+            [email]
+        );
+
+        if (existingUser.rows.length > 0) {
+            return res.status(409).json({
+                message: "Email already registered",
             });
         }
 
@@ -44,7 +63,8 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const email = req.body.email?.trim().toLowerCase();
+        const password = req.body.password;
 
         if (!email || !password) {
             return res.status(400).json({
@@ -110,18 +130,18 @@ router.get(
                 [req.user?.id]
             );
 
-      if (result.rows.length === 0) {
-        return res.status(404).json({
-          message: "User not found",
-        });
-      }
+            if (result.rows.length === 0) {
+                return res.status(401).json({
+                    message: "Session expired. Please login again.",
+                });
+            }
 
-      return res.json(result.rows[0]);
-    } catch (error) {
-      console.error(error);
+            return res.json(result.rows[0]);
+        } catch (error) {
+            console.error(error);
 
-      return res.status(500).json({
-        message: "Failed to load profile",
+            return res.status(500).json({
+                message: "Failed to load profile",
             });
         }
     }

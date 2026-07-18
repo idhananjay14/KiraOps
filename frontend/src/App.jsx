@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import MainLayout from "./layouts/MainLayout";
-
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Product from "./pages/Product";
@@ -13,10 +11,12 @@ import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import Cart from "./pages/Cart";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { SnackbarProvider } from "./context/SnackbarContext";
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <SnackbarProvider>
+      <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
@@ -41,5 +41,6 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </SnackbarProvider>
   );
 }

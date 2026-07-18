@@ -3,6 +3,7 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import useCart from "../context/useCart";
 import { getProduct } from "../services/productService";
+import { CircularProgress } from "@mui/material";
 
 export default function Product() {
   const { id } = useParams();
@@ -28,16 +29,62 @@ export default function Product() {
 
   if (loading) {
     return (
-      <Container sx={{ py: 10 }}>
-        <Typography>Loading...</Typography>
+      <Container
+        sx={{
+          py: 12,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <CircularProgress color="inherit" />
+
+        <Typography color="text.secondary">
+          Loading product...
+        </Typography>
       </Container>
     );
   }
 
   if (!product) {
     return (
-      <Container sx={{ py: 10 }}>
-        <Typography>Product not found.</Typography>
+      <Container sx={{
+        py: 12,
+        textAlign: "center",
+      }}
+      >
+        <Typography
+          sx={{
+            fontSize: 32,
+            fontWeight: 600,
+            mb: 2,
+          }}
+        >
+          Product not found
+        </Typography>
+
+        <Typography
+          color="text.secondary"
+          sx={{ mb: 4 }}
+        >
+          The product you're looking for doesn't exist or has been removed.
+        </Typography>
+
+        <Button
+          href="/shop"
+          variant="contained"
+          sx={{
+            bgcolor: "#111",
+            borderRadius: 0,
+
+            "&:hover": {
+              bgcolor: "#222",
+            },
+          }}
+        >
+          Continue Shopping
+        </Button>
       </Container>
     );
   }
@@ -67,12 +114,18 @@ export default function Product() {
             alt={product.name}
             sx={{
               width: "100%",
-              height: 650,
+              height: {
+                xs: 420,
+                md: 650,
+              },
+              borderRadius: 2,
+              border: "1px solid #ECE8E2",
               objectFit: "cover",
             }}
           />
 
           <Box>
+
             <Typography
               sx={{
                 color: "#8B7355",
@@ -83,6 +136,22 @@ export default function Product() {
               }}
             >
               Luxury Collection
+            </Typography>
+
+            <Typography
+              sx={{
+                display: "inline-block",
+                px: 2,
+                py: 0.6,
+                mb: 3,
+                bgcolor: "#F6F0E8",
+                color: "#8B7355",
+                borderRadius: 10,
+                fontSize: 13,
+                fontWeight: 600,
+              }}
+            >
+              In Stock
             </Typography>
 
             <Typography
@@ -128,8 +197,12 @@ export default function Product() {
               sx={{
                 bgcolor: "#111",
                 borderRadius: 0,
-                px: 5,
-                py: 1.6,
+                px: 6,
+                py: 1.8,
+
+                fontSize: 15,
+                fontWeight: 600,
+                letterSpacing: ".08em",
 
                 "&:hover": {
                   bgcolor: "#222",
@@ -137,9 +210,9 @@ export default function Product() {
               }}
             >
               Add to Cart
-            </Button>
+              </Button>
+            </Box>
           </Box>
-        </Box>
       </Container>
     </Box>
   );

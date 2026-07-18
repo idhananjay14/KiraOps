@@ -41,62 +41,124 @@ export default function Cart() {
                 </Typography>
 
                 {cartItems.length === 0 ? (
-                    <Typography>Your cart is empty.</Typography>
+                    <Box
+                        sx={{
+                            py: 8,
+                            textAlign: "center",
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                fontSize: 26,
+                                fontWeight: 600,
+                                mb: 1,
+                            }}
+                        >
+                            Your shopping bag is empty
+                        </Typography>
+
+                        <Typography
+                            color="text.secondary"
+                            sx={{ mb: 4 }}
+                        >
+                            Discover timeless luxury pieces curated just for you.
+                        </Typography>
+
+                        <Button
+                            component={Link}
+                            to="/shop"
+                            variant="contained"
+                            sx={{
+                                bgcolor: "#111",
+                                borderRadius: 0,
+
+                                "&:hover": {
+                                    bgcolor: "#222",
+                                },
+                            }}
+                        >
+                            Continue Shopping
+                        </Button>
+                    </Box>
                 ) : (
                     <>
                         {cartItems.map((item) => (
                             <Box
                                 key={item.id}
                                 sx={{
+                                    display: "flex",
+                                    gap: 3,
                                     py: 3,
+                                    alignItems: "center",
                                     borderBottom: "1px solid #ECE8E2",
                                 }}
                             >
-                                <Typography fontWeight={600}>
-                                    {item.name}
-                                </Typography>
-
-                                <Typography sx={{ mt: 1 }}>
-                                    ${item.price}
-                                </Typography>
-
-                                <Typography sx={{ mt: 1 }}>
-                                    Quantity: {item.quantity}
-                                </Typography>
 
                                 <Box
+                                    component="img"
+                                    src={item.image}
+                                    alt={item.name}
                                     sx={{
-                                        display: "flex",
-                                        gap: 1,
-                                        mt: 2,
+                                        width: 90,
+                                        height: 110,
+                                        objectFit: "cover",
+                                        borderRadius: 1,
+                                        border: "1px solid #ECE8E2",
                                     }}
-                                >
-                                    <Button
-                                        variant="outlined"
-                                        onClick={() =>
-                                            decreaseQuantity(item.id)
-                                        }
-                                    >
-                                        -
-                                    </Button>
+                                />
 
-                                    <Button
-                                        variant="outlined"
-                                        onClick={() =>
-                                            increaseQuantity(item.id)
-                                        }
-                                    >
-                                        +
-                                    </Button>
+                                <Box sx={{ flex: 1 }}>
 
-                                    <Button
-                                        color="error"
-                                        onClick={() =>
-                                            removeFromCart(item.id)
-                                        }
+                                    <Typography fontWeight={600}>
+                                        {item.name}
+                                    </Typography>
+
+                                    <Typography sx={{ mt: 1 }}>
+                                        ₹{item.price.toLocaleString("en-IN")}
+                                    </Typography>
+
+                                    <Typography sx={{ mt: 1 }}>
+                                        Quantity × {item.quantity}
+                                    </Typography>
+
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            gap: 1,
+                                            mt: 2,
+                                        }}
                                     >
-                                        Remove
-                                    </Button>
+                                        <Button
+                                            variant="outlined"
+                                            onClick={() =>
+                                                decreaseQuantity(item.id)
+                                            }
+                                        >
+                                            -
+                                        </Button>
+
+                                        <Button
+                                            variant="outlined"
+                                            onClick={() =>
+                                                increaseQuantity(item.id)
+                                            }
+                                        >
+                                            +
+                                        </Button>
+
+                                        <Button
+                                            variant="text"
+                                            color="error"
+                                            sx={{
+                                                textTransform: "none",
+                                            }}
+                                            onClick={() =>
+                                                removeFromCart(item.id)
+                                            }
+                                        >
+                                            Remove
+                                        </Button>
+                                    </Box>
                                 </Box>
                             </Box>
                         ))}
@@ -105,7 +167,10 @@ export default function Cart() {
                             sx={{
                                 display: "flex",
                                 justifyContent: "space-between",
+                                alignItems: "center",
                                 mt: 5,
+                                pt: 3,
+                                borderTop: "1px solid #ECE8E2",
                             }}
                         >
                             <Typography fontWeight={700}>
@@ -113,7 +178,7 @@ export default function Cart() {
                             </Typography>
 
                             <Typography fontWeight={700}>
-                                ${total}
+                                ₹{total.toLocaleString("en-IN")}
                             </Typography>
                         </Box>
 
@@ -131,7 +196,7 @@ export default function Cart() {
                                 },
                             }}
                         >
-                            Checkout
+                            Proceed to Checkout
                         </Button>
                     </>
                 )}

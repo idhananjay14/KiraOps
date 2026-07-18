@@ -9,9 +9,11 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../services/authService";
+import useSnackbar from "../hooks/useSnackbar";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { showSnackbar } = useSnackbar();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -33,7 +35,7 @@ export default function Register() {
     event.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      showSnackbar("Passwords do not match", "error");
       return;
     }
 
@@ -46,12 +48,15 @@ export default function Register() {
         formData.password
       );
 
-      alert("Account created successfully");
+      showSnackbar("Account created successfully", "success");
 
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (error) {
-      alert(
-        error.response?.data?.message || "Registration failed"
+      showSnackbar(
+        error.response?.data?.message || "Registration failed",
+        "error"
       );
     } finally {
       setLoading(false);

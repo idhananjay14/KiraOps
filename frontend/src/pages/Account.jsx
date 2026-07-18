@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { getProfile } from "../services/userService";
 import { logout } from "../services/authService";
 import { getOrders } from "../services/orderService";
+import { CircularProgress } from "@mui/material";
 
 export default function Account() {
   const navigate = useNavigate();
@@ -44,13 +45,25 @@ export default function Account() {
 
   const handleLogout = () => {
     logout();
-    navigate("/login", { replace: true });c
+    navigate("/login", { replace: true });
   };
 
   if (!user) {
     return (
-      <Container sx={{ py: 8 }}>
-        <Typography>Loading...</Typography>
+      <Container
+        sx={{
+          py: 12,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <CircularProgress color="inherit" />
+
+        <Typography color="text.secondary">
+          Loading your account...
+        </Typography>
       </Container>
     );
   }
@@ -116,37 +129,103 @@ export default function Account() {
           </Typography>
 
           {orders.length === 0 ? (
-            <Typography color="text.secondary">
-              No orders yet.
-            </Typography>
+            <Box
+              sx={{
+                py: 6,
+                textAlign: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: 22,
+                  fontWeight: 600,
+                  mb: 1,
+                }}
+              >
+                No orders yet
+              </Typography>
+
+              <Typography
+                color="text.secondary"
+                sx={{ mb: 3 }}
+              >
+                Start shopping to place your first order.
+              </Typography>
+
+              <Button
+                variant="contained"
+                onClick={() => navigate("/shop")}
+                sx={{
+                  bgcolor: "#111",
+                  borderRadius: 0,
+
+                  "&:hover": {
+                    bgcolor: "#222",
+                  },
+                }}
+              >
+                Shop Collection
+              </Button>
+            </Box>
           ) : (
             orders.map((order) => (
               <Paper
                 key={order.id}
                 elevation={0}
                 sx={{
-                  p: 2,
-                  mb: 2,
+                  p: 3,
+                  mb: 3,
                   border: "1px solid #ECE8E2",
+                  borderRadius: 2,
                 }}
               >
-                <Typography fontWeight={600}>
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                    mb: 1,
+                  }}
+                >
                   Order #{order.id}
                 </Typography>
 
-                <Typography>
-                  Product ID: {order.product_id}
+                <Typography
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: 500,
+                  }}
+                >
+                  {order.product_name}
                 </Typography>
 
-                <Typography>
-                  Quantity: {order.quantity}
+                <Typography
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
+                  Quantity × {order.quantity}
                 </Typography>
 
-                <Typography>
+                <Typography
+                  sx={{
+                    mt: 1,
+                    fontWeight: 600,
+                  }}
+                >
                   ₹{Number(order.total_amount).toLocaleString("en-IN")}
                 </Typography>
 
-                <Typography sx={{ color: "#8B7355" }}>
+                <Typography
+                  sx={{
+                    mt: 1,
+                    display: "inline-block",
+                    px: 1.5,
+                    py: 0.5,
+                    borderRadius: 5,
+                    bgcolor: "#F6F0E8",
+                    color: "#8B7355",
+                    fontSize: 13,
+                    textTransform: "capitalize",
+                  }}
+                >
                   {order.status}
                 </Typography>
               </Paper>

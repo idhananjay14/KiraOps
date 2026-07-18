@@ -5,7 +5,8 @@ import ProductGrid from "../components/shop/ProductGrid";
 
 export default function Shop() {
   const [searchParams] = useSearchParams();
-  const category = searchParams.get("category");
+
+  const category = searchParams.get("category") || "all";
 
   return (
     <>

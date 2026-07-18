@@ -11,10 +11,12 @@ import {
 
 import useCart from "../context/useCart";
 import { createOrder } from "../services/orderService";
+import useSnackbar from "../hooks/useSnackbar";
 
 export default function Checkout() {
   const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
+  const { showSnackbar } = useSnackbar();
 
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -35,12 +37,14 @@ export default function Checkout() {
 
       clearCart();
 
-      alert("Order placed successfully");
+      showSnackbar("Order placed successfully", "success");
+      setTimeout(() => {
+        navigate("/account");
+      }, 1000);
 
-      navigate("/account");
     } catch (error) {
       console.log("Order Error:", error.response?.data);
-      alert(error.response?.data?.message || "Failed to place order");
+      showSnackbar(error.response?.data?.message || "Failed to place order", "error");
     }
   };
 
