@@ -1,0 +1,143 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kiraops-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+    networks:
+      - kiraops-network
+
+  auth:
+    build: ./backend/services/auth
+    container_name: kiraops-auth
+    restart: unless-stopped
+
+    env_file:
+      - ./backend/services/auth/.env
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    ports:
+      - "3002:3002"
+
+    networks:
+      - kiraops-network
+
+  product-service:
+    build: ./backend/services/product-service
+    container_name: kiraops-product-service
+    restart: unless-stopped
+
+    env_file:
+      - ./backend/services/product-service/.env
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    ports:
+      - "3003:3003"
+
+    networks:
+      - kiraops-network
+
+  orders:
+    build: ./backend/services/orders
+    container_name: kiraops-orders
+    restart: unless-stopped
+
+    env_file:
+      - ./backend/services/orders/.env
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    ports:
+      - "3004:3004"
+
+    networks:
+      - kiraops-network
+
+  user-service:
+    build: ./backend/services/user-service
+    container_name: kiraops-user-service
+    restart: unless-stopped
+
+    env_file:
+      - ./backend/services/user-service/.env
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    ports:
+      - "3005:3005"
+
+    networks:
+      - kiraops-network
+
+  gateway:
+    build: ./backend/services/gateway
+    container_name: kiraops-gateway
+    restart: unless-stopped
+
+    env_file:
+      - ./backend/services/gateway/.env
+
+    depends_on:
+      auth:
+        condition: service_started
+      product-service:
+        condition: service_started
+      orders:
+        condition: service_started
+      user-service:
+        condition: service_started
+
+    ports:
+      - "3001:3001"
+
+    networks:
+      - kiraops-network
+
+  frontend:
+    build: ./frontend
+    container_name: kiraops-frontend
+    restart: unless-stopped
+
+    depends_on:
+      gateway:
+        condition: service_started
+
+    ports:
+      - "5173:80"
+
+    networks:
+      - kiraops-network
+
+volumes:
+  postgres_data:
+
+networks:
+  kiraops-network:
+    driver: bridge
