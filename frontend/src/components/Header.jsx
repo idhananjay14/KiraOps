@@ -17,9 +17,12 @@ import {
   isAuthenticated,
   logout,
 } from "../services/authService";
+import { useContext } from "react";
+import CartContext from "../context/CartContext";
 
 export default function Header() {
   const { cartItems } = useCart();
+  const { clearCart } = useContext(CartContext);
   const navigate = useNavigate();
 
   const loggedIn = isAuthenticated();
@@ -29,7 +32,14 @@ export default function Header() {
     { label: "Shop", path: "/shop" },
   ];
   const handleLogout = () => {
+    console.log("Before:", localStorage.getItem("cart"));
+
+    clearCart();
+
+    console.log("After:", localStorage.getItem("cart"));
+
     logout();
+
     navigate("/", { replace: true });
   };
 
@@ -56,171 +66,171 @@ export default function Header() {
               md: "auto 1fr auto",
             },
             alignItems: "center",
-        columnGap: 6,
+            columnGap: 6,
           }}
         >
-        {/* Logo */}
-        <Typography
-          component={Link}
-          to="/"
-          sx={{
-            textDecoration: "none",
-            color: "#111",
-            fontFamily: '"Cormorant Garamond", serif',
-            fontSize: {
-              xs: 30,
-              md: 34,
-            },
-            fontWeight: 600,
-            letterSpacing: "0.04em",
-            transition: ".25s",
+          {/* Logo */}
+          <Typography
+            component={Link}
+            to="/"
+            sx={{
+              textDecoration: "none",
+              color: "#111",
+              fontFamily: '"Cormorant Garamond", serif',
+              fontSize: {
+                xs: 30,
+                md: 34,
+              },
+              fontWeight: 600,
+              letterSpacing: "0.04em",
+              transition: ".25s",
 
-            "&:hover": {
-              color: "#8B7355",
-            },
-          }}
+              "&:hover": {
+                color: "#8B7355",
+              },
+            }}
           >
             KIRAOPS
           </Typography>
 
-      {/* Navigation */}
-      <Box
-        sx={{
-          display: {
-  xs: "none",
-  md: "flex",
-},
-          justifySelf: "center",
-          alignItems: "center",
-          gap: 6,
-        }}
-      >
-        {navLinks.map((item) => (
-          <Typography
-            key={item.label}
-            component={NavLink}
-            to={item.path}
+          {/* Navigation */}
+          <Box
             sx={{
-              textDecoration: "none",
-              color: "#111",
-              fontSize: 12,
-              fontWeight: 500,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              position: "relative",
-              transition: "all .25s ease",
-
-              "&:hover": {
-                color: "#8B7355",
+              display: {
+                xs: "none",
+                md: "flex",
               },
-
-              "&.active": {
-                color: "#8B7355",
-              },
-
-              "&::after": {
-                content: '""',
-                position: "absolute",
-                left: 0,
-                bottom: -6,
-                width: 0,
-                height: 2,
-                backgroundColor: "#8B7355",
-                transition: "width .25s ease",
-              },
-
-              "&:hover::after": {
-                width: "100%",
-              },
-
-              "&.active::after": {
-                width: "100%",
-              },
+              justifySelf: "center",
+              alignItems: "center",
+              gap: 6,
             }}
           >
-            {item.label}
-          </Typography>
-        ))}
-      </Box>
+            {navLinks.map((item) => (
+              <Typography
+                key={item.label}
+                component={NavLink}
+                to={item.path}
+                sx={{
+                  textDecoration: "none",
+                  color: "#111",
+                  fontSize: 12,
+                  fontWeight: 500,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  position: "relative",
+                  transition: "all .25s ease",
 
-      {/* Right Icons */}
-      <Box
-        sx={{
-          display: "flex",
-          justifySelf: "end",
-          alignItems: "center",
-          gap: 1,
-        }}
-      >
+                  "&:hover": {
+                    color: "#8B7355",
+                  },
 
-        <IconButton
-          component={Link}
-          to={loggedIn ? "/account" : "/login"}
-          sx={{
-            color: "#111",
-            transition: ".25s",
+                  "&.active": {
+                    color: "#8B7355",
+                  },
 
-            "&:hover": {
-              color: "#8B7355",
-              bgcolor: "transparent",
-            },
-          }}
-        >
-          <PersonOutlineOutlinedIcon fontSize="small" />
-        </IconButton>
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    left: 0,
+                    bottom: -6,
+                    width: 0,
+                    height: 2,
+                    backgroundColor: "#8B7355",
+                    transition: "width .25s ease",
+                  },
 
-        <IconButton
-          component={Link}
-          to="/cart"
-          sx={{
-            color: "#111",
-            transition: ".25s",
+                  "&:hover::after": {
+                    width: "100%",
+                  },
 
-            "&:hover": {
-              color: "#8B7355",
-              bgcolor: "transparent",
-            },
-          }}
-        >
-          <Badge
-            badgeContent={cartItems.length}
+                  "&.active::after": {
+                    width: "100%",
+                  },
+                }}
+              >
+                {item.label}
+              </Typography>
+            ))}
+          </Box>
+
+          {/* Right Icons */}
+          <Box
             sx={{
-              "& .MuiBadge-badge": {
-                bgcolor: "#8B7355",
-                color: "#fff",
-                fontSize: 9,
-                minWidth: 18,
-                height: 18,
-                fontWeight: 600,
-              },
+              display: "flex",
+              justifySelf: "end",
+              alignItems: "center",
+              gap: 1,
             }}
           >
-            <ShoppingBagOutlinedIcon fontSize="small" />
-          </Badge>
-        </IconButton>
 
-        {loggedIn && (
-          <Button
-            onClick={handleLogout}
-            sx={{
-              color: "#111",
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: ".08em",
-              textTransform: "uppercase",
+            <IconButton
+              component={Link}
+              to={loggedIn ? "/account" : "/login"}
+              sx={{
+                color: "#111",
+                transition: ".25s",
 
-              "&:hover": {
-                bgcolor: "transparent",
-                color: "#8B7355",
-              },
-            }}
-          >
-            Logout
-          </Button>
-        )}
-      </Box>
-    </Toolbar>
-    </Container >
+                "&:hover": {
+                  color: "#8B7355",
+                  bgcolor: "transparent",
+                },
+              }}
+            >
+              <PersonOutlineOutlinedIcon fontSize="small" />
+            </IconButton>
+
+            <IconButton
+              component={Link}
+              to="/cart"
+              sx={{
+                color: "#111",
+                transition: ".25s",
+
+                "&:hover": {
+                  color: "#8B7355",
+                  bgcolor: "transparent",
+                },
+              }}
+            >
+              <Badge
+                badgeContent={cartItems.length}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    bgcolor: "#8B7355",
+                    color: "#fff",
+                    fontSize: 9,
+                    minWidth: 18,
+                    height: 18,
+                    fontWeight: 600,
+                  },
+                }}
+              >
+                <ShoppingBagOutlinedIcon fontSize="small" />
+              </Badge>
+            </IconButton>
+
+            {loggedIn && (
+              <Button
+                onClick={handleLogout}
+                sx={{
+                  color: "#111",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  letterSpacing: ".08em",
+                  textTransform: "uppercase",
+
+                  "&:hover": {
+                    bgcolor: "transparent",
+                    color: "#8B7355",
+                  },
+                }}
+              >
+                Logout
+              </Button>
+            )}
+          </Box>
+        </Toolbar>
+      </Container >
     </AppBar>
   );
 }

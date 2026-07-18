@@ -70,6 +70,7 @@ export default function CartProvider({ children }) {
   };
 
   const clearCart = () => {
+    localStorage.removeItem("cart");
     setCartItems([]);
   };
 

@@ -25,7 +25,9 @@ export default function ProductGrid({ category }) {
   }, []);
 
     const filtered = (() => {
-      if (!category) return products;
+      if (!category || category.toLowerCase() === "all") {
+        return products;
+      }
 
       switch (category.toLowerCase()) {
         case "fashion":

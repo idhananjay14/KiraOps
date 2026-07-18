@@ -13,10 +13,12 @@ import { getProfile } from "../services/userService";
 import { logout } from "../services/authService";
 import { getOrders } from "../services/orderService";
 import { CircularProgress } from "@mui/material";
+import { useContext } from "react";
+import CartContext from "../context/CartContext";
 
 export default function Account() {
   const navigate = useNavigate();
-
+const { clearCart } = useContext(CartContext);
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
 
@@ -44,6 +46,7 @@ export default function Account() {
   }
 
   const handleLogout = () => {
+    clearCart();
     logout();
     navigate("/login", { replace: true });
   };
