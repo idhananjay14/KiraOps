@@ -43,9 +43,12 @@ kind: Service
 metadata:
   name: product-service
   namespace: kiraops
+  labels:
+    app: product-service
 spec:
   selector:
     app: product-service
   ports:
-    - port: 3003
+    - name: http
+      port: 3003
       targetPort: 3003
