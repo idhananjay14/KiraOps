@@ -1,0 +1,46 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: kiraops-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: kiraops.rules
+      rules:
+        - alert: ServiceDown
+          expr: up{job=~"product-service|gateway|auth|orders|user-service"} == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Service Down"
+            description: "{{ $labels.job }} is down."
+
+        - alert: HighCPUUsage
+          expr: rate(process_cpu_seconds_total[5m]) > 0.8
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High CPU Usage"
+            description: "CPU usage is above 80%."
+
+        - alert: HighMemoryUsage
+          expr: process_resident_memory_bytes > 500000000
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High Memory Usage"
+            description: "Memory usage is above 500 MB."
+
+        - alert: PodRestarting
+          expr: increase(kube_pod_container_status_restarts_total[10m]) > 2
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod Restarting"
+            description: "{{ $labels.pod }} restarted multiple times."
