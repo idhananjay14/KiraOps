@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import { httpRequestsTotal, register } from "./metrics";
 
 dotenv.config();
 
@@ -11,10 +12,27 @@ const app = express();
 app.use(cors());
 app.use(helmet());
 
+app.use((req, res, next) => {
+  res.on("finish", () => {
+    httpRequestsTotal.inc({
+      method: req.method,
+      route: req.path,
+      statusCode: res.statusCode.toString(),
+    });
+  });
+
+  next();
+});
+
 app.get("/health", (_, res) => {
   res.json({
     status: "Gateway is healthy",
   });
+});
+
+app.get("/metrics", async (_req, res) => {
+  res.setHeader("Content-Type", register.contentType);
+  res.end(await register.metrics());
 });
 
 app.use(

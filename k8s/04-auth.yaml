@@ -48,9 +48,12 @@ kind: Service
 metadata:
   name: auth
   namespace: kiraops
+  labels:
+    app: auth
 spec:
   selector:
     app: auth
   ports:
-    - port: 3002
+    - name: http
+      port: 3002
       targetPort: 3002

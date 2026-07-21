@@ -38,9 +38,12 @@ kind: Service
 metadata:
   name: gateway
   namespace: kiraops
+  labels:
+    app: gateway
 spec:
   selector:
     app: gateway
   ports:
-    - port: 3001
+    - name: http 
+      port: 3001
       targetPort: 3001

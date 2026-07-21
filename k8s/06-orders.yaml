@@ -48,9 +48,12 @@ kind: Service
 metadata:
   name: orders
   namespace: kiraops
+  labels:
+    app: orders
 spec:
   selector:
     app: orders
   ports:
-    - port: 3004
+    - name: http
+      port: 3004
       targetPort: 3004

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import userRoutes from "./routes/user";
 import { connectDB } from "./database/connection";
+import { httpRequestsTotal, register } from "./metrics";
 
 dotenv.config();
 
@@ -15,8 +16,25 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.on("finish", () => {
+    httpRequestsTotal.inc({
+      method: req.method,
+      route: req.path,
+      statusCode: res.statusCode.toString(),
+    });
+  });
+
+  next();
+});
+
 app.get("/health", (req, res) => {
   res.json({ status: "User Service is healthy" });
+});
+
+app.get("/metrics", async (_req, res) => {
+  res.setHeader("Content-Type", register.contentType);
+  res.end(await register.metrics());
 });
 
 app.use("/users", userRoutes);
