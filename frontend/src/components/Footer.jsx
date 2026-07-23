@@ -7,87 +7,90 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        py: 6,
+        py: 1.5,
         bgcolor: "#FAF9F6",
-        borderTop: "1px solid #ECE8E2",
-        mt: 8,
+        borderTop: "1px solid #E6E1DA",
+        mt: -5,
       }}
     >
-      <Container maxWidth="lg">
-        <Typography
+      <Container maxWidth="xl">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 3,
+            flexWrap: {
+              xs: "wrap",
+              md: "nowrap",
+            },
+          }}
+        >
+           <Typography
           sx={{
             fontFamily: '"Cormorant Garamond", serif',
-            fontSize: 34,
-            textAlign: "center",
+            fontSize: 28,
+            fontWeight: 500,
+            letterSpacing: ".02em",
             color: "#111",
-            mb: 1,
+             whiteSpace: "nowrap",
           }}
         >
           KIRAOPS
         </Typography>
+        
+          <Box
+            sx={{
+              display: "flex",
+              gap: 5,
+              alignItems: "center",
+              flex: 1,
+    justifyContent: "center",
+            }}
+          >
+            {[
+              { label: "Home", to: "/" },
+              { label: "Shop", to: "/shop" },
+              { label: "Account", to: "/account" },
+              { label: "Cart", to: "/cart" },
+            ].map((item) => (
+              <Typography
+                key={item.label}
+                component={Link}
+                to={item.to}
+                sx={{
+                  textDecoration: "none",
+                  color: "#222",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: ".08em",
+                  transition: ".25s",
 
-        <Typography
+                  "&:hover": {
+                    color: "#8B7355",
+                  },
+                }}
+              >
+                {item.label}
+              </Typography>
+            ))}
+          </Box>
+           <Typography
           sx={{
             textAlign: "center",
             color: "#777",
-            maxWidth: 520,
-            mx: "auto",
-            lineHeight: 1.8,
-            mb: 4,
-          }}
-        >
-          Curating timeless luxury with exceptional craftsmanship,
-          refined design, and an elevated shopping experience.
-        </Typography>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            gap: 5,
-            flexWrap: "wrap",
-            mb: 5,
-          }}
-        >
-          {[
-            { label: "Home", to: "/" },
-            { label: "Shop", to: "/shop" },
-            { label: "Account", to: "/account" },
-            { label: "Cart", to: "/cart" },
-          ].map((item) => (
-            <Typography
-              key={item.label}
-              component={Link}
-              to={item.to}
-              sx={{
-                textDecoration: "none",
-                color: "#555",
-                fontSize: 13,
-                textTransform: "uppercase",
-                letterSpacing: ".12em",
-                transition: ".25s",
-
-                "&:hover": {
-                  color: "#8B7355",
-                },
-              }}
-            >
-              {item.label}
-            </Typography>
-          ))}
-        </Box>
-
-        <Typography
-          sx={{
-            textAlign: "center",
-            color: "#999",
-            fontSize: 12,
+            fontSize: 13,
+            fontWeight: 500,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
           }}
         >
-          © 2026 KIRAOPS • All Rights Reserved
+          © 2026 KIRAOPS 
         </Typography>
+        </Box>
+
+       
       </Container>
     </Box>
   );

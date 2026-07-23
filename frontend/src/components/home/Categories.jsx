@@ -36,24 +36,36 @@ export default function Categories() {
         borderTop: "1px solid #ece8e2",
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth={false}
+       maxWidth={false}
+  sx={{
+    px: {
+      xs: 3,
+      sm: 4,
+      md: 6,
+      lg: 8,
+    },
+  }}
+>
         {/* Heading */}
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-end",
-            mb: 6,
+            mb: 3,
             flexWrap: "wrap",
           }}
         >
           <Box>
             <Typography
               sx={{
-                fontSize: 11,
-                letterSpacing: ".3em",
-                color: "#777",
-                mb: 1,
+                fontSize: "12px",
+                fontWeight: 700,
+                letterSpacing: "0.28em",
+                color: "#6d6457",
+ textTransform: "uppercase",
+                mb: 0.8,
               }}
             >
               THE HOUSES
@@ -61,12 +73,15 @@ export default function Categories() {
 
             <Typography
               sx={{
-                fontFamily: "Cormorant Garamond",
+                fontFamily: "Cormorant Garamond" ,
                 fontSize: {
-                  xs: "34px",
-                  md: "54px",
+                  xs: "40px",
+                  md: "50px",
                 },
-                lineHeight: 1.05,
+                fontWeight: 500,
+    lineHeight: 1,
+    color: "#111",
+    letterSpacing: "-0.02em",
               }}
             >
               Three worlds, one measure.
@@ -77,9 +92,13 @@ export default function Categories() {
             to="/shop"
             style={{
               color: "#111",
-              textDecoration: "underline",
-              textUnderlineOffset: "6px",
-              fontSize: "15px",
+              textDecoration: "none",
+              fontSize: "12px",
+              letterSpacing: "1.5px",
+              textTransform: "uppercase",
+              fontWeight: 600,
+              borderBottom: "1px solid #111",
+              paddingBottom: "6px",
             }}
           >
             See all →
@@ -94,7 +113,7 @@ export default function Categories() {
               xs: "1fr",
               md: "repeat(3,1fr)",
             },
-            gap: 2.5,
+            gap: 1.5,
           }}
         >
           {categories.map((item, index) => (
@@ -107,11 +126,12 @@ export default function Categories() {
             >
               <Box
                 sx={{
-                  mt: index === 1 ? 8 : 0,
+                  mt: 0,
                   overflow: "hidden",
                   position: "relative",
-                  height: index === 1 ? 330 : 420,
+                  height: 260,
                   cursor: "pointer",
+                  borderRadius: "4px",
 
                   "& img": {
                     transition: ".6s ease",
@@ -140,9 +160,12 @@ export default function Categories() {
                     display: "block",
                     objectFit: "cover",
                     objectPosition:
-                      item.title === "Jewelry & Watches"
-                        ? "50% 20%"
-                        : "center",
+                      item.title === "Fashion"
+                        ? "50% 5%"
+                        : item.title === "Jewelry & Watches"
+                          ? "50% 20%"
+                          : "50% 80%",
+                          borderRadius: "4px",
                   }}
                 />
 
@@ -184,8 +207,8 @@ export default function Categories() {
                         color: "#fff",
                         fontFamily: "Cormorant Garamond",
                         fontSize: {
-                          xs: "28px",
-                          md: "40px",
+                          xs: "24px",
+                          md: "35px",
                         },
                         lineHeight: 1,
                       }}
